@@ -1,0 +1,30 @@
+{
+	"hash": "fd9e553e6965962ddf092ac39bf585d3",
+	"updated": "2021-02-02T12:03:48.777743-03:00",
+	"installedModules": {
+		"github.com/dliocode/horse-utils-clientip": {
+			"name": "horse-utils-clientip",
+			"version": "0.0.6",
+			"hash": "db4c16721abe55f9f8c42c7990101361",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/horse": {
+			"name": "horse",
+			"version": "2.0.10",
+			"hash": "42db84faa442a8f649355ca4f9bbf433",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		},
+		"github.com/hashload/horse-logger": {
+			"name": "horse-logger",
+			"version": "2.0.0",
+			"hash": "760be6cc43bb713d512e0efc81630130",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		}
+	}
+}
