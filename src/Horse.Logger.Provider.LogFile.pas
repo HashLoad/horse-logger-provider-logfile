@@ -30,6 +30,7 @@ type
     function SetDir(ADir: string): THorseLoggerLogFileConfig;
     function GetLogFormat(out ALogFormat: string): THorseLoggerLogFileConfig;
     function GetDir(out ADir: string): THorseLoggerLogFileConfig;
+    class function New: THorseLoggerLogFileConfig;
   end;
 
   THorseLoggerProviderLogFileManager = class(THorseLoggerThread)
@@ -130,7 +131,7 @@ begin
   if LLogCache.Count = 0 then
     Exit;
   if FConfig = nil then
-    FConfig := THorseLoggerLogFileConfig.Create;
+    FConfig := THorseLoggerLogFileConfig.New;
   FConfig.GetLogFormat(LLogStr).GetDir(LFilename);
 {$IFDEF FPC }
   LFilename := ConcatPaths([LFilename, 'access_' + FormatDateTime('yyyy-mm-dd', Now()) + '.log']);
@@ -192,6 +193,11 @@ function THorseLoggerLogFileConfig.GetLogFormat(out ALogFormat: string): THorseL
 begin
   Result := Self;
   ALogFormat := FLogFormat;
+end;
+
+class function THorseLoggerLogFileConfig.New: THorseLoggerLogFileConfig;
+begin
+  Result := THorseLoggerLogFileConfig.Create;
 end;
 
 function THorseLoggerLogFileConfig.SetDir(ADir: string): THorseLoggerLogFileConfig;
