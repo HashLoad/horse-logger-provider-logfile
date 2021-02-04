@@ -23,7 +23,7 @@ var
 
 begin
   LLogFileConfig := THorseLoggerLogFileConfig.New
-    .SetFormat('${request_clientip} [${time}] ${response_status}')
+    .SetLogFormat('${request_clientip} [${time}] ${response_status}')
     .SetDir('/var/log/horse');
 
   THorseLoggerManager.RegisterProvider(
