@@ -127,9 +127,7 @@ var
   LFilename: string;
   LTextFile: TextFile;
 begin
-  LLogCache := ExtractLogCache;
-  if LLogCache.Count = 0 then
-    Exit;
+
   if FConfig = nil then
     FConfig := THorseLoggerLogFileConfig.New;
   FConfig.GetLogFormat(LLogStr).GetDir(LFilename);
@@ -138,7 +136,10 @@ begin
 {$ELSE}
   LFilename := TPath.Combine(LFilename, 'access_' + FormatDateTime('yyyy-mm-dd', Now()) + '.log');
 {$ENDIF}
+  LLogCache := ExtractLogCache;
   try
+    if LLogCache.Count = 0 then
+      Exit;
     AssignFile(LTextFile, LFilename);
     if (FileExists(LFilename)) then
       Append(LTextFile)
@@ -148,7 +149,7 @@ begin
       for I := 0 to Pred(LLogCache.Count) do
       begin
         LLog := LLogCache.Items[I] as THorseLoggerLog;
-        LParams := THorseLoggerUtils.GetFormatParams(LLogStr);
+        LParams := THorseLoggerUtils.GetFormatParams(DEFAULT_HORSE_LOG_FORMAT);
         for Z := Low(LParams) to High(LParams) do
         begin
 {$IFDEF FPC}
