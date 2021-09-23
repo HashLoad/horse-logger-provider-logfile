@@ -149,7 +149,7 @@ begin
       for I := 0 to Pred(LLogCache.Count) do
       begin
         LLog := LLogCache.Items[I] as THorseLoggerLog;
-        LParams := THorseLoggerUtils.GetFormatParams(DEFAULT_HORSE_LOG_FORMAT);
+        LParams := THorseLoggerUtils.GetFormatParams(FConfig.FLogFormat);
         for Z := Low(LParams) to High(LParams) do
         begin
 {$IFDEF FPC}
