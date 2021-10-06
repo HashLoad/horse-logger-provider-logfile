@@ -5,7 +5,7 @@
 </a>
 
 ## ⭕ Prerequisites
-[**horse-logger**](https://github.com/HashLoad/horse-logger) - Official middleware for logging in APIs developed with the Horse framework.
+[**horse-logger**](https://github.com/HashLoad/horse-logger) - Official middleware for logging in APIs developed with the Horse framework.<br>
 [**horse-utils-clientip**](https://github.com/dliocode/horse-utils-clientip) - Capture the client's IP.
 
 *Obs: If you use Boss (dependency manager for Delphi), the jhonson will be installed automatically when installing horse-logger-provider-logfile.*
