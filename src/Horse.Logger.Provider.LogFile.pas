@@ -1,13 +1,13 @@
 unit Horse.Logger.Provider.LogFile;
 
-{$IFDEF FPC }
-{$MODE DELPHI}
+{$IFDEF FPC}
+  {$MODE DELPHI}
 {$ENDIF}
 
 interface
 
 uses
-{$IFDEF FPC }
+{$IFDEF FPC}
   Classes,
 {$ELSE}
   System.Classes,
@@ -15,19 +15,14 @@ uses
   Horse.Logger;
 
 type
-
   THorseLoggerLogFileConfig = class
   private
-    { private declarations }
     FLogFormat: string;
     FDir: string;
-  protected
-    { protected declarations }
   public
-    { public declarations }
     constructor Create;
-    function SetLogFormat(ALogFormat: string): THorseLoggerLogFileConfig;
-    function SetDir(ADir: string): THorseLoggerLogFileConfig;
+    function SetLogFormat(const ALogFormat: string): THorseLoggerLogFileConfig;
+    function SetDir(const ADir: string): THorseLoggerLogFileConfig;
     function GetLogFormat(out ALogFormat: string): THorseLoggerLogFileConfig;
     function GetDir(out ADir: string): THorseLoggerLogFileConfig;
     class function New: THorseLoggerLogFileConfig;
@@ -35,25 +30,18 @@ type
 
   THorseLoggerProviderLogFileManager = class(THorseLoggerThread)
   private
-    { private declarations }
     FConfig: THorseLoggerLogFileConfig;
   protected
-    { protected declarations }
     procedure DispatchLogCache; override;
   public
-    { public declarations }
     destructor Destroy; override;
     function SetConfig(AConfig: THorseLoggerLogFileConfig): THorseLoggerProviderLogFileManager;
   end;
 
   THorseLoggerProviderLogFile = class(TInterfacedObject, IHorseLoggerProvider)
   private
-    { private declarations }
     FHorseLoggerProviderLogFileManager: THorseLoggerProviderLogFileManager;
-  protected
-    { protected declarations }
   public
-    { public declarations }
     constructor Create(const AConfig: THorseLoggerLogFileConfig = nil);
     destructor Destroy; override;
     procedure DoReceiveLogCache(ALogCache: THorseLoggerCache);
@@ -63,7 +51,7 @@ type
 implementation
 
 uses
-{$IFDEF FPC }
+{$IFDEF FPC}
   SysUtils, fpJSON, SyncObjs;
 {$ELSE}
   System.SysUtils, System.IOUtils, System.JSON, System.SyncObjs;
@@ -117,25 +105,22 @@ end;
 
 procedure THorseLoggerProviderLogFileManager.DispatchLogCache;
 var
-  I: Integer;
-  Z: Integer;
+  I, Z: Integer;
   LLogCache: THorseLoggerCache;
   LLog: THorseLoggerLog;
   LParams: TArray<string>;
   LValue: {$IFDEF FPC}THorseLoggerLogItemString{$ELSE}string{$ENDIF};
-  LLogStr: string;
-  LFilename: string;
+  LLogStr, LFilename: string;
   LTextFile: TextFile;
 begin
-
   if FConfig = nil then
     FConfig := THorseLoggerLogFileConfig.New;
   FConfig.GetLogFormat(LLogStr).GetDir(LFilename);
-{$IFDEF FPC }
+  {$IFDEF FPC}
   LFilename := ConcatPaths([LFilename, 'access_' + FormatDateTime('yyyy-mm-dd', Now()) + '.log']);
-{$ELSE}
+  {$ELSE}
   LFilename := TPath.Combine(LFilename, 'access_' + FormatDateTime('yyyy-mm-dd', Now()) + '.log');
-{$ENDIF}
+  {$ENDIF}
   LLogCache := ExtractLogCache;
   try
     if LLogCache.Count = 0 then
@@ -152,13 +137,13 @@ begin
         LParams := THorseLoggerUtils.GetFormatParams(FConfig.FLogFormat);
         for Z := Low(LParams) to High(LParams) do
         begin
-{$IFDEF FPC}
+          {$IFDEF FPC}
           if LLog.Find(LParams[Z], LValue) then
             LLogStr := LLogStr.Replace('${' + LParams[Z] + '}', LValue.AsString);
-{$ELSE}
+          {$ELSE}
           if LLog.TryGetValue<string>(LParams[Z], LValue) then
             LLogStr := LLogStr.Replace('${' + LParams[Z] + '}', LValue);
-{$ENDIF}
+          {$ENDIF}
         end;
       end;
       WriteLn(LTextFile, LLogStr);
@@ -201,13 +186,15 @@ begin
   Result := THorseLoggerLogFileConfig.Create;
 end;
 
-function THorseLoggerLogFileConfig.SetDir(ADir: string): THorseLoggerLogFileConfig;
+function THorseLoggerLogFileConfig.SetDir(const ADir: string): THorseLoggerLogFileConfig;
 begin
   Result := Self;
+  if not DirectoryExists(ADir) then
+    CreateDir(ADir);
   FDir := ADir;
 end;
 
-function THorseLoggerLogFileConfig.SetLogFormat(ALogFormat: string): THorseLoggerLogFileConfig;
+function THorseLoggerLogFileConfig.SetLogFormat(const ALogFormat: string): THorseLoggerLogFileConfig;
 begin
   Result := Self;
   FLogFormat := ALogFormat;

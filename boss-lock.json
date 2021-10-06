@@ -12,16 +12,16 @@
 		},
 		"github.com/hashload/horse": {
 			"name": "horse",
-			"version": "2.0.10",
-			"hash": "42db84faa442a8f649355ca4f9bbf433",
+			"version": "v2.0.14",
+			"hash": "38c6bebdc7b9712d6e5856d299289a26",
 			"artifacts": {},
 			"failed": false,
 			"changed": false
 		},
 		"github.com/hashload/horse-logger": {
 			"name": "horse-logger",
-			"version": "2.0.0",
-			"hash": "760be6cc43bb713d512e0efc81630130",
+			"version": "2.0.2",
+			"hash": "bfb121c6e85b5cfeedbd445c962a3fed",
 			"artifacts": {},
 			"failed": false,
 			"changed": false
