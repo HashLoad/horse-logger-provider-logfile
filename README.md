@@ -32,7 +32,7 @@ Default: `${request_clientip} [${time}] ${request_user_agent} "${request_method}
 
 Possible values: `time`,`execution_time`,`request_clientip`,`request_method`,`request_version`,`request_url`,`request_query`,`request_path_info`,`request_path_translated`,`request_cookie`,`request_accept`,`request_from`,`request_host`,`request_referer`,`request_user_agent`,`request_connection`,`request_derived_from`,`request_remote_addr`,`request_remote_host`,`request_script_name`,`request_server_port`,`request_remote_ip`,`request_internal_path_info`,`request_raw_path_info`,`request_cache_control`,`request_script_name`,`request_authorization`,`request_content_encoding`,`request_content_type`,`request_content_length`,`request_content_version`,`response_version`,`response_reason`,`response_server`,`response_realm`,`response_allow`,`response_location`,`response_log_message`,`response_title`,`response_content_encoding`,`response_content_type`,`response_content_length`,`response_content_version`,`response_status`
 
-## ⚡️ Quickstart
+## ⚡️ Quickstart Delphi
 ```delphi
 uses
   Horse,
@@ -65,6 +65,47 @@ begin
 
   THorse.Listen(9000);
 end;
+```
+
+## ⚡️ Quickstart Lazarus
+```delphi
+{$MODE DELPHI}{$H+}
+
+uses
+  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  cthreads,
+  {$ENDIF}{$ENDIF}
+  Horse,
+  Horse.Logger, // It's necessary to use the unit
+  Horse.Logger.Provider.LogFile, // It's necessary to use the unit
+  SysUtils;
+
+var
+  LLogFileConfig: THorseLoggerLogFileConfig;
+
+procedure GetPing(Req: THorseRequest; Res: THorseResponse; Next: TNextProc);
+begin
+  Res.Send('Pong');
+end;
+
+begin
+  LLogFileConfig := THorseLoggerLogFileConfig.New
+    .SetLogFormat('${request_clientip} [${time}] ${response_status}')
+    .SetDir('D:\Servidores\Log');
+
+  // You can also specify the log format and the path where it will be saved:
+  THorseLoggerManager.RegisterProvider(THorseLoggerProviderLogFile.New(LLogFileConfig));
+
+  // Here you will define the provider that will be used.
+  // THorseLoggerManager.RegisterProvider(THorseLoggerProviderLogFile.New());
+
+  // It's necessary to add the middleware in the Horse:
+  THorse.Use(THorseLoggerManager.HorseCallback);
+
+  THorse.Get('/ping');
+
+  THorse.Listen(9000, OnListen);
+end.
 ```
 
 ## 📝 Output samples
