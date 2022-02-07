@@ -29,7 +29,7 @@ begin
   THorse.Get('/ping',
     procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
     begin
-      Res.Send('pong');
+      Res.Send('{"nome":"Vinicius"}').ContentType('application/json');
     end);
 
   THorse.Listen(9000);

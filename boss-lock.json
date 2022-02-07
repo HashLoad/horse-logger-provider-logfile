@@ -20,8 +20,8 @@
 		},
 		"github.com/hashload/horse-logger": {
 			"name": "horse-logger",
-			"version": "2.0.2",
-			"hash": "bfb121c6e85b5cfeedbd445c962a3fed",
+			"version": "2.0.3",
+			"hash": "cea7efcfb7a2afa52e025156fd2e53a9",
 			"artifacts": {},
 			"failed": false,
 			"changed": false
