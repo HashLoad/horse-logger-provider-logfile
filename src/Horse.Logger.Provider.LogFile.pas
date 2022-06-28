@@ -190,7 +190,7 @@ function THorseLoggerLogFileConfig.SetDir(const ADir: string): THorseLoggerLogFi
 begin
   Result := Self;
   if not DirectoryExists(ADir) then
-    CreateDir(ADir);
+    ForceDirectories(ADir);
   FDir := ADir;
 end;
 
