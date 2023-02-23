@@ -116,6 +116,8 @@ begin
   if FConfig = nil then
     FConfig := THorseLoggerLogFileConfig.New;
   FConfig.GetLogFormat(LLogStr).GetDir(LFilename);
+  if (LFilename <> EmptyStr) and (not DirectoryExists(LFilename)) then
+    ForceDirectories(LFilename);
   {$IFDEF FPC}
   LFilename := ConcatPaths([LFilename, 'access_' + FormatDateTime('yyyy-mm-dd', Now()) + '.log']);
   {$ELSE}
@@ -157,8 +159,8 @@ end;
 
 function THorseLoggerProviderLogFileManager.SetConfig(AConfig: THorseLoggerLogFileConfig): THorseLoggerProviderLogFileManager;
 begin
-  Result := Self;
   FConfig := AConfig;
+  Result := Self;
 end;
 
 { THorseLoggerConfig }
@@ -171,14 +173,14 @@ end;
 
 function THorseLoggerLogFileConfig.GetDir(out ADir: string): THorseLoggerLogFileConfig;
 begin
-  Result := Self;
   ADir := FDir;
+  Result := Self;
 end;
 
 function THorseLoggerLogFileConfig.GetLogFormat(out ALogFormat: string): THorseLoggerLogFileConfig;
 begin
-  Result := Self;
   ALogFormat := FLogFormat;
+  Result := Self;
 end;
 
 class function THorseLoggerLogFileConfig.New: THorseLoggerLogFileConfig;
@@ -188,16 +190,14 @@ end;
 
 function THorseLoggerLogFileConfig.SetDir(const ADir: string): THorseLoggerLogFileConfig;
 begin
-  Result := Self;
-  if not DirectoryExists(ADir) then
-    ForceDirectories(ADir);
   FDir := ADir;
+  Result := Self;
 end;
 
 function THorseLoggerLogFileConfig.SetLogFormat(const ALogFormat: string): THorseLoggerLogFileConfig;
 begin
-  Result := Self;
   FLogFormat := ALogFormat;
+  Result := Self;
 end;
 
 end.
