@@ -27,7 +27,7 @@ begin
   THorse.Use(THorseLoggerManager.HorseCallback);
 
   THorse.Get('/ping',
-    procedure(Req: THorseRequest; Res: THorseResponse; Next: TProc)
+    procedure(Req: THorseRequest; Res: THorseResponse)
     begin
       Res.Send('{"nome":"Vinicius"}').ContentType('application/json');
     end);

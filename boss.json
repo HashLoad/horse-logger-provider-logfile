@@ -1,11 +1,11 @@
 {
 	"name": "horse-logger-provider-logfile",
-	"description": "Save log to file",
-	"version": "1.0.5",
-	"homepage": "https://github.com/HashLoad/horse-logger-provider-logfile",
-	"mainsrc": "./src/",
+	"description": "",
+	"version": "1.0.9",
+	"homepage": "",
+	"mainsrc": "./src",
 	"projects": [],
 	"dependencies": {
-		"github.com/hashload/horse-logger": "^2.0.5"
+		"github.com/hashload/horse-logger": "^2.0.7"
 	}
 }

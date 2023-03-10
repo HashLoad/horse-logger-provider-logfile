@@ -14,7 +14,7 @@ uses
 var
   LLogFileConfig: THorseLoggerLogFileConfig;
 
-procedure GetPing(Req: THorseRequest; Res: THorseResponse; Next: TNextProc);
+procedure GetPing(Req: THorseRequest; Res: THorseResponse);
 begin
   Res.Send('Pong');
 end;
