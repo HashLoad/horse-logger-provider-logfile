@@ -10,6 +10,7 @@ static/
 **/__recovery/
 src/*.~*
 *.res
+*.skincfg
 *.lps
 *.exe
 *.dll

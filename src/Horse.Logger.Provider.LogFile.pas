@@ -11,7 +11,15 @@ uses
   Classes,
 {$ELSE}
   System.Classes,
-  Winapi.Windows,
+  {$IFDEF LINUX}
+    {$DEFINE USE_PATH_MAX}
+  {$ELSE}
+    Winapi.Windows,
+  {$ENDIF}
+
+  {$IFDEF USE_PATH_MAX}
+    {$DEFINE MAX_PATH := Posix.Unistd.PATH_MAX}
+  {$ENDIF}
 {$ENDIF}
   Horse.Logger;
 
@@ -58,7 +66,7 @@ uses
 {$IFDEF FPC}
   SysUtils, fpJSON, SyncObjs;
 {$ELSE}
-  System.SysUtils, System.IOUtils, System.JSON, System.SyncObjs;
+  System.SysUtils, System.IOUtils, System.JSON, System.SyncObjs, System.Types;
 {$ENDIF}
 
 { THorseLoggerProviderLogFile }
@@ -170,6 +178,22 @@ begin
 end;
 
 { THorseLoggerConfig }
+
+{$IFDEF LINUX}
+function GetModuleFileName(Module: HINST; lpFilename: PChar; nSize: DWORD): DWORD; stdcall;
+var
+  LPath: string;
+begin
+  LPath := GetEnvironmentVariable('_');
+  if Integer(nSize) <= Length(LPath) then
+    Result := 0
+  else
+  begin
+    StrPCopy(lpFilename, LPath);
+    Result := Length(LPath);
+  end;
+end;
+{$ENDIF}
 
 constructor THorseLoggerLogFileConfig.Create;
 {$IFNDEF FPC}
