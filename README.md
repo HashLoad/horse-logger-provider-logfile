@@ -40,13 +40,13 @@ uses
   Horse.Logger.Provider.LogFile, // It's necessary to use the unit
   System.SysUtils;
 
-var
-  LLogFileConfig: THorseLoggerLogFileConfig;
+// var
+//   LLogFileConfig: THorseLoggerLogFileConfig;
 
 begin
-  LLogFileConfig := THorseLoggerLogFileConfig.New
-    .SetLogFormat('${request_clientip} [${time}] ${response_status}')
-    .SetDir('D:\Servidores\Log');
+  // LLogFileConfig := THorseLoggerLogFileConfig.New
+  //   .SetLogFormat('${request_clientip} [${time}] ${response_status}')
+  //   .SetDir('D:\Servidores\Log');
 
   // You can also specify the log format and the path where it will be saved:
   // THorseLoggerManager.RegisterProvider(THorseLoggerProviderLogFile.New(LLogFileConfig));
@@ -80,8 +80,8 @@ uses
   Horse.Logger.Provider.LogFile, // It's necessary to use the unit
   SysUtils;
 
-var
-  LLogFileConfig: THorseLoggerLogFileConfig;
+// var
+//   LLogFileConfig: THorseLoggerLogFileConfig;
 
 procedure GetPing(Req: THorseRequest; Res: THorseResponse; Next: TNextProc);
 begin
@@ -89,15 +89,15 @@ begin
 end;
 
 begin
-  LLogFileConfig := THorseLoggerLogFileConfig.New
-    .SetLogFormat('${request_clientip} [${time}] ${response_status}')
-    .SetDir('D:\Servidores\Log');
+  // LLogFileConfig := THorseLoggerLogFileConfig.New
+  //   .SetLogFormat('${request_clientip} [${time}] ${response_status}')
+  //   .SetDir('D:\Servidores\Log');
 
   // You can also specify the log format and the path where it will be saved:
-  THorseLoggerManager.RegisterProvider(THorseLoggerProviderLogFile.New(LLogFileConfig));
+  // THorseLoggerManager.RegisterProvider(THorseLoggerProviderLogFile.New(LLogFileConfig));
 
   // Here you will define the provider that will be used.
-  // THorseLoggerManager.RegisterProvider(THorseLoggerProviderLogFile.New());
+  THorseLoggerManager.RegisterProvider(THorseLoggerProviderLogFile.New());
 
   // It's necessary to add the middleware in the Horse:
   THorse.Use(THorseLoggerManager.HorseCallback);
