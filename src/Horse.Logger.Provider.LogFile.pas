@@ -180,7 +180,7 @@ end;
 { THorseLoggerConfig }
 
 {$IFDEF LINUX}
-function GetModuleFileName(Module: HINST; lpFilename: PChar; nSize: DWORD): DWORD; stdcall;
+function GetModuleFileName(Module: {$IFDEF FPC}TFPResourceHMODULE{$ELSE}HINST{$ENDIF}; lpFilename: PChar; nSize: DWORD): DWORD; stdcall;
 var
   LPath: string;
 begin
