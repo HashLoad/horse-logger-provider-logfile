@@ -29,14 +29,17 @@ type
     FLogFormat: string;
     FDir: string;
     FLogName: string;
+    FCodePage: Integer;
   public
     constructor Create;
     function SetLogFormat(const ALogFormat: string): THorseLoggerLogFileConfig;
     function SetDir(const ADir: string): THorseLoggerLogFileConfig;
     function SetLogName(const ALogName: string): THorseLoggerLogFileConfig;
+    function SetEncodingFile(const ACodePage: Integer): THorseLoggerLogFileConfig;
     function GetLogFormat(out ALogFormat: string): THorseLoggerLogFileConfig;
     function GetDir(out ADir: string): THorseLoggerLogFileConfig;
     function GetLogName(out ALogName: string): THorseLoggerLogFileConfig;
+    function GetEncodingFile(out ACodePage: Integer): THorseLoggerLogFileConfig;
     class function New: THorseLoggerLogFileConfig;
   end;
 
@@ -117,7 +120,7 @@ end;
 
 procedure THorseLoggerProviderLogFileManager.DispatchLogCache;
 var
-  I, Z: Integer;
+  I, Z, LCodePage: Integer;
   LLogCache: THorseLoggerCache;
   LLog: THorseLoggerLog;
   LParams: TArray<string>;
@@ -129,6 +132,7 @@ begin
     FConfig := THorseLoggerLogFileConfig.New;
   FConfig.GetLogFormat(LLogStr).GetDir(LFilename);
   FConfig.GetLogFormat(LLogStr).GetLogName(LLogName);
+  FConfig.GetEncodingFile(LCodePage);
 
   if (LFilename <> EmptyStr) and (not DirectoryExists(LFilename)) then
     ForceDirectories(LFilename);
@@ -141,7 +145,7 @@ begin
   try
     if LLogCache.Count = 0 then
       Exit;
-    AssignFile(LTextFile, LFilename);
+    AssignFile(LTextFile, LFilename, LCodePage);
     if (FileExists(LFilename)) then
       Append(LTextFile)
     else
@@ -214,11 +218,22 @@ begin
   FDir := ExtractFilePath(FDir) ;
   {$ENDIF}
   FDir := FDir + '\logs';
+  {$IFDEF FPC}
+  FCodePage := CP_ACP; // Default OS
+  {$ELSE}
+  FCodePage := CP_NONE; // Default OS
+  {$ENDIF}
 end;
 
 function THorseLoggerLogFileConfig.GetDir(out ADir: string): THorseLoggerLogFileConfig;
 begin
   ADir := FDir;
+  Result := Self;
+end;
+
+function THorseLoggerLogFileConfig.GetEncodingFile(out ACodePage: Integer): THorseLoggerLogFileConfig;
+begin
+  ACodePage := FCodePage;
   Result := Self;
 end;
 
@@ -242,6 +257,12 @@ end;
 function THorseLoggerLogFileConfig.SetDir(const ADir: string): THorseLoggerLogFileConfig;
 begin
   FDir := ADir;
+  Result := Self;
+end;
+
+function THorseLoggerLogFileConfig.SetEncodingFile(const ACodePage: Integer): THorseLoggerLogFileConfig;
+begin
+  FCodePage := ACodePage;
   Result := Self;
 end;
 
