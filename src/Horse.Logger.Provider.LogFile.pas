@@ -215,7 +215,7 @@ begin
   SetString(FDir, LPath, GetModuleFileName(HInstance, LPath, SizeOf(LPath)));
   FDir := FDir.Replace(INVALID_PATH, EmptyStr);
   FLogName := 'access_' + ExtractFileName(FDir).Replace(ExtractFileExt(FDir), EmptyStr);
-  FDir := ExtractFilePath(FDir) ;
+  FDir := ExtractFileDir(FDir);
   {$ENDIF}
   FDir := FDir + '\logs';
   {$IFDEF FPC}
