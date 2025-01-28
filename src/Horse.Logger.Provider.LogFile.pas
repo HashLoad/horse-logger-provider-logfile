@@ -102,7 +102,7 @@ var
   I: Integer;
 begin
   for I := 0 to Pred(ALogCache.Count) do
-    FHorseLoggerProviderLogFileManager.NewLog(THorseLoggerLog(ALogCache.Items[0].Clone));
+    FHorseLoggerProviderLogFileManager.NewLog(THorseLoggerLog(ALogCache.Items[I ].Clone));
 end;
 
 class function THorseLoggerProviderLogFile.New(const AConfig: THorseLoggerLogFileConfig = nil): IHorseLoggerProvider;
@@ -130,8 +130,7 @@ var
 begin
   if FConfig = nil then
     FConfig := THorseLoggerLogFileConfig.New;
-  FConfig.GetLogFormat(LLogStr).GetDir(LFilename);
-  FConfig.GetLogFormat(LLogStr).GetLogName(LLogName);
+  FConfig.GetDir(LFilename).GetLogName(LLogName);
   FConfig.GetEncodingFile(LCodePage);
 
   if (LFilename <> EmptyStr) and (not DirectoryExists(LFilename)) then
@@ -154,6 +153,7 @@ begin
       for I := 0 to Pred(LLogCache.Count) do
       begin
         LLog := LLogCache.Items[I] as THorseLoggerLog;
+        LLogStr := FConfig.FLogFormat;
         LParams := THorseLoggerUtils.GetFormatParams(FConfig.FLogFormat);
         for Z := Low(LParams) to High(LParams) do
         begin
@@ -165,8 +165,8 @@ begin
             LLogStr := LLogStr.Replace('${' + LParams[Z] + '}', LValue);
           {$ENDIF}
         end;
+        WriteLn(LTextFile, LLogStr);
       end;
-      WriteLn(LTextFile, LLogStr);
     finally
       CloseFile(LTextFile);
     end;
