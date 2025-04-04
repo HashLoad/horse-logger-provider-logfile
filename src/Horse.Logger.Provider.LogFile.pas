@@ -208,21 +208,25 @@ var
 {$ENDIF}
 begin
   FLogFormat := DEFAULT_HORSE_LOG_FORMAT;
-  {$IFDEF FPC}
+{$IFDEF FPC}
   FDir := ExtractFileDir(ParamStr(0));
   FLogName := 'access';
-  {$ELSE}
+{$ELSE}
   SetString(FDir, LPath, GetModuleFileName(HInstance, LPath, SizeOf(LPath)));
   FDir := FDir.Replace(INVALID_PATH, EmptyStr);
   FLogName := 'access_' + ExtractFileName(FDir).Replace(ExtractFileExt(FDir), EmptyStr);
   FDir := ExtractFileDir(FDir);
-  {$ENDIF}
+{$ENDIF}
   FDir := FDir + '\logs';
-  {$IFDEF FPC}
+{$IFDEF FPC}
   FCodePage := CP_ACP; // Default OS
+{$ELSE}
+  {$IFDEF LINUX}
+    FCodePage := CP_ACP; // Default OS
   {$ELSE}
-  FCodePage := CP_NONE; // Default OS
+    FCodePage := CP_NONE; // Default OS
   {$ENDIF}
+{$ENDIF}
 end;
 
 function THorseLoggerLogFileConfig.GetDir(out ADir: string): THorseLoggerLogFileConfig;
